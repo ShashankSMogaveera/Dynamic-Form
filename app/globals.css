@@ -7,11 +7,13 @@
   --button-text: #000000;
 }
 
+
 [data-theme="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
   --button-bg: #333333;
   --button-text: #ffffff;
+  --heading-color: #ffffff; /* White for dark mode */
 }
 
 [data-theme="neon"] {
@@ -19,7 +21,9 @@
   --foreground: #00ffcc;
   --button-bg: #ff00ff;
   --button-text: #ffffff;
+  --heading-color: #ffffff; /* White for neon mode */
 }
+
 
 [data-theme="blue"] {
   --background: #1e3a8a;
@@ -67,12 +71,4 @@ body {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* 
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-} */
+
