@@ -1,0 +1,21 @@
+{
+    "steps": [
+      {
+        "name": "basicInfo",
+        "label": "Basic Information",
+        "fields": [
+          { "name": "country", "label": "Country", "type": "text", "validations": { "required": true } },
+          { "name": "state", "label": "State", "type": "text", "validations": { "required": true } }
+        ]
+      },
+      {
+        "name": "address",
+        "label": "Address Details",
+        "fields": [
+          { "name": "street", "label": "Street Address", "type": "text", "validations": { "required": true } },
+          { "name": "zipcode", "label": "ZIP Code", "type": "text", "validations": { "required": true } }
+        ]
+      }
+    ]
+  }
+  

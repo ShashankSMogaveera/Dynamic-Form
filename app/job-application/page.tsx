@@ -1,0 +1,26 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import MultiStepForm from "../components/Specialized/MultiStepForm";
+import ProgressBar from "../components/Specialized/ProgressBar";
+import jobApplicationConfig from "../jobApplicationConfig.json";
+import { initializeForm } from "../store/formSlice";
+
+export default function JobApplicationPage() {
+  const dispatch = useDispatch();
+  const currentIndex = useSelector((state: any) => state.form.currentIndex) || 0;
+
+  useEffect(() => {
+    dispatch(initializeForm(jobApplicationConfig));
+  }, [dispatch]);
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-10">
+      <div className="w-full max-w-2xl bg-white shadow-md p-6 rounded-md">
+        <h1 className="text-center text-2xl font-bold mb-4">Job Application Form</h1>
+        <ProgressBar config={jobApplicationConfig} currentIndex={currentIndex} />
+        <MultiStepForm config={jobApplicationConfig} />
+      </div>
+    </div>
+  );
+}
