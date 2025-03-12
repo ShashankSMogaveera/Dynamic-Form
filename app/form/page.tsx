@@ -9,9 +9,7 @@ import { useTheme } from "../components/ThemeProvider";
 
 export default function FormPage() {
   const dispatch = useDispatch();
-  const currentIndex = useSelector((state: any) => state.form.currentIndex) || 0; // Get from Redux
-  // OR use local state if Redux is not available
-  // const [currentIndex, setCurrentIndex] = useState(0);
+  const currentIndex = useSelector((state: any) => state.form.currentIndex) || 0; 
   const {theme}=useTheme()
 
   useEffect(() => {

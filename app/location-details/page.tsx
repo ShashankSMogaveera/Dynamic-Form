@@ -9,7 +9,7 @@ import { useTheme } from "../components/ThemeProvider";
 
 export default function LocationDetailsPage() {
   const dispatch = useDispatch();
-  const currentIndex = useSelector((state: any) => state.form.currentIndex) || 0; // Get current step index from Redux
+  const currentIndex = useSelector((state: any) => state.form.currentIndex) || 0; 
   const {theme}=useTheme()
 
   useEffect(() => {

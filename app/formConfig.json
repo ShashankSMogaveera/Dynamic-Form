@@ -1,27 +1,48 @@
 {
-    "steps": [
-      {
-        "name": "personal_info",
-        "label": "Personal Information",
-        "fields": [
-          { "name": "firstName", "label": "First Name", "type": "text", "validations": { "required": true } },
-          { "name": "lastName", "label": "Last Name", "type": "text", "validations": { "required": true } },
-          { "name": "email", "label": "Email", "type": "email", "validations": { "required": true, "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$" } }
-        ]
-      },
-      {
-        "name": "address_info",
-        "label": "Address Information",
-        "fields": [
-          { "name": "address", "label": "Address", "type": "text", "validations": { "required": true } },
-          { "name": "city", "label": "City", "type": "text", "validations": { "required": true } },
-          { "name": "zip", "label": "ZIP Code", "type": "text", "validations": { "required": true, "pattern": "^[0-9]{5}$" } }
-        ]
-      },
-      {
-        "name": "confirmation",
-        "label": "Confirmation",
-        "fields": []
-      }
-    ]
-  }
+  "steps": [
+    {
+      "name": "personal_info",
+      "label": "Personal Information",
+      "fields": [
+        { "name": "firstName", "label": "First Name", "type": "text", "validations": { "required": true } },
+        { "name": "lastName", "label": "Last Name", "type": "text", "validations": { "required": true } },
+        { "name": "email", "label": "Email", "type": "email", "validations": { "required": true, "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$" } },
+        { "name": "phone", "label": "Phone Number", "type": "tel", "validations": { "required": true, "pattern": "^[0-9]{10}$" } }
+      ]
+    },
+    {
+      "name": "address_info",
+      "label": "Address Information",
+      "fields": [
+        { "name": "address", "label": "Address", "type": "text", "validations": { "required": true } },
+        { "name": "city", "label": "City", "type": "text", "validations": { "required": true } },
+        { "name": "state", "label": "State", "type": "dropdown", "options": ["California", "Texas", "New York", "Florida", "Illinois"], "validations": { "required": true } },
+        { "name": "zip", "label": "ZIP Code", "type": "text", "validations": { "required": true, "pattern": "^[0-9]{5}$" } }
+      ]
+    },
+    {
+      "name": "preferences",
+      "label": "Preferences",
+      "fields": [
+        {
+          "name": "contactMethod",
+          "label": "Preferred Contact Method",
+          "type": "radio",
+          "options": ["Email", "Phone", "Text Message"],
+          "validations": { "required": true }
+        },
+        {
+          "name": "subscribeNewsletter",
+          "label": "Subscribe to Newsletter",
+          "type": "checkbox",
+          "validations": { "required": false }
+        }
+      ]
+    },
+    {
+      "name": "confirmation",
+      "label": "Confirmation",
+      "fields": []
+    }
+  ]
+}

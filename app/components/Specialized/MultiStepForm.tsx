@@ -18,18 +18,27 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
 
   const currentStepConfig = config.steps.find((s: any) => s.name === stepName);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type, checked } = e.target as HTMLInputElement; 
+  
+    let finalValue = value;
+  
+    
+    if (type === "checkbox") {
+      finalValue = checked ? "true" : "false";
+    }
+  
     const fieldConfig = currentStepConfig?.fields.find((f: any) => f.name === name);
-    const errorMsg = fieldConfig ? validateField(fieldConfig, value) : "";
-
+    const errorMsg = fieldConfig ? validateField(fieldConfig, finalValue) : "";
+  
     setErrors((prev) => ({
       ...prev,
       [name]: errorMsg,
     }));
-
-    dispatch(updateFormData({ [name]: value }));
+  
+    dispatch(updateFormData({ [name]: finalValue }));
   };
+  
 
   const validateStep = (): boolean => {
     let isValid = true;
@@ -66,6 +75,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
           name={field.name}
           value={formData[field.name] || ""}
           onChange={handleChange}
+          options={field.options}
           error={errors[field.name]}
         />
       ))}
