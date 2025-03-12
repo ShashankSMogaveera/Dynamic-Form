@@ -58,6 +58,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const handleNext = () => {
     if (validateStep()) {
       dispatch(nextStep(config));
+      console.log("next")
     }
   };
 
