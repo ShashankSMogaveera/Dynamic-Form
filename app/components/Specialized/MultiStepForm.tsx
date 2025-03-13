@@ -5,7 +5,7 @@ import { nextStep, prevStep, updateFormData,initializeForm } from "../../store/f
 import InputField from "../Reusable/InputField";
 import { RootState } from "../../store/store";
 import { validateField } from "../../utils/validation";
-import { decrementCurret, incrementCurrent } from "@/app/store/ProgressSlice";
+import { decrementCurret, incrementCurrent, incrementCurrentByValue } from "@/app/store/ProgressSlice";
 
 interface MultiStepFormProps {
   config: any;
@@ -73,6 +73,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
     if (validateStep()) {
       localStorage.setItem("submittedFormData", JSON.stringify(formData));
       setSubmittedData(formData);
+      dispatch(incrementCurrent());
       setIsSubmitted(true);
     }
   };
@@ -80,7 +81,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const handleResetForm = () => {
     setIsSubmitted(false); 
     setSubmittedData(null); 
-    
+    dispatch(incrementCurrentByValue(0));
     dispatch(initializeForm(config));
   };
 
