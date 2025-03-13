@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MultiStepForm from "../components/Specialized/MultiStepForm";
-import ProgressBar from "../components/Specialized/ProgressBar";
+import ProgressBar from "../components/Reusable/ProgressBar";
 import formConfig from "../formConfig.json";
 import { initializeForm } from "../store/formSlice";
 import { useTheme } from "../components/ThemeProvider";
@@ -14,7 +14,7 @@ export default function FormPage() {
   useEffect(() => {
     dispatch(initializeForm(formConfig));
   }, [dispatch]);
-
+  const itemlist= formConfig.steps.map(item=> ({title: item.name}))
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center p-10"
@@ -28,7 +28,8 @@ export default function FormPage() {
         style={{ backgroundColor: "#ffffff", color: "black" }} // Form stays white with black text
       >
         <h1 className="text-center text-2xl font-bold mb-4">Multi-Step Form</h1>
-        <ProgressBar config={formConfig} currentIndex={currentIndex} />
+        {/* <ProgressBar config={formConfig} currentIndex={currentIndex} /> */}
+        <ProgressBar itemList={itemlist}/>
         <MultiStepForm config={formConfig} />
       </div>
     </div>
