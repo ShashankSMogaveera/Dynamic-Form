@@ -5,7 +5,7 @@ import { nextStep, prevStep, updateFormData,initializeForm } from "../../store/f
 import InputField from "../Reusable/InputField";
 import { RootState } from "../../store/store";
 import { validateField } from "../../utils/validation";
-import { decrementCurret, incrementCurrent, incrementCurrentByValue } from "@/app/store/ProgressSlice";
+import { decrementCurret, incrementCurrent, incrementCurrentByValue, setError } from "@/app/store/ProgressSlice";
 
 interface MultiStepFormProps {
   config: any;
@@ -43,11 +43,12 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const validateStep = (): boolean => {
     let isValid = true;
     const newErrors: { [key: string]: string } = {};
-
+    dispatch(setError({value:false}));
     currentStepConfig?.fields.forEach((field: any) => {
       const errorMsg = validateField(field, formData[field.name] || "");
       if (errorMsg) {
         isValid = false;
+        dispatch(setError({value:true}));
         newErrors[field.name] = errorMsg;
       }
     });
@@ -81,7 +82,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const handleResetForm = () => {
     setIsSubmitted(false); 
     setSubmittedData(null); 
-    dispatch(incrementCurrentByValue(0));
+    dispatch(incrementCurrentByValue({value:0}));
     dispatch(initializeForm(config));
   };
 
@@ -90,7 +91,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
       
       {!isSubmitted ? (
         <>
-          <h2>{currentStepConfig?.label}</h2>
+          {/* <h2>{currentStepConfig?.label}</h2> */}
           {currentStepConfig?.fields.map((field: any) => (
             <InputField
               key={field.name}

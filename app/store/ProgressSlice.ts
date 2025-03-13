@@ -3,7 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const ProgressSlice = createSlice({
     name: "progress",
     initialState: {
-        current: 0
+        current: 0,
+        isError: false
     },
     reducers:{
         incrementCurrent: (state)=>{
@@ -11,9 +12,9 @@ const ProgressSlice = createSlice({
             state.current+=1
             console.log(state.current)
         },
-        incrementCurrentByValue: (state,action: PayloadAction<number>)=>{
+        incrementCurrentByValue: (state,action: PayloadAction<{value:number}>)=>{
             console.log('increment')
-            state.current=action.payload
+            state.current=action.payload.value
             console.log(state.current)
         },
         decrementCurret: (state)=>{
@@ -22,9 +23,12 @@ const ProgressSlice = createSlice({
             state.current>0? state.current-=1: state.current
             console.log(state.current)
         },
+        setError: (state, action: PayloadAction<{ value: boolean }>) => {
+            state.isError = action.payload.value;
+        },
 
     }
 })
 
 export default ProgressSlice.reducer;
-export const { incrementCurrent, decrementCurret, incrementCurrentByValue } =ProgressSlice.actions;
+export const { incrementCurrent, decrementCurret, incrementCurrentByValue, setError } =ProgressSlice.actions;
