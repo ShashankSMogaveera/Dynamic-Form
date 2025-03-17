@@ -42,6 +42,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
 
   const validateStep = (): boolean => {
     let isValid = true;
+    dispatch(setError({value:false}));
     const newErrors: { [key: string]: string } = {};
     dispatch(setError({value:false}));
     currentStepConfig?.fields.forEach((field: any) => {
