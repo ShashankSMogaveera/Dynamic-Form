@@ -35,8 +35,11 @@ const formSlice = createSlice({
     updateFormData: (state, action) => {
       state.formData = { ...state.formData, ...action.payload };
     },
+    updateStepName: (state, action: PayloadAction<string>) => {
+      state.stepName = action.payload;
+    },
   },
 });
 
-export const { initializeForm, nextStep, prevStep, updateFormData } = formSlice.actions;
+export const { initializeForm, nextStep, prevStep, updateFormData,updateStepName } = formSlice.actions;
 export default formSlice.reducer;

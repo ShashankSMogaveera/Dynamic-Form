@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { nextStep, prevStep, updateFormData,initializeForm } from "../../store/formSlice";
+import { nextStep, prevStep, updateFormData,initializeForm,updateStepName } from "../../store/formSlice";
 import InputField from "../Reusable/InputField";
 import { RootState } from "../../store/store";
 import { validateField } from "../../utils/validation";
@@ -57,6 +57,14 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
     return isValid;
   };
 
+  const stepIndex = config.steps.findIndex((s: any) => s.name === stepName);
+ 
+  useEffect(() => {
+    if (stepIndex !== -1) {
+      dispatch(updateStepName(config.steps[stepIndex].name));
+    }
+  }, [stepIndex, dispatch]);
+  
   const handleNext = () => {
     if (validateStep()) {
       dispatch(nextStep(config));
