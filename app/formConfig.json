@@ -7,8 +7,8 @@
         { "name": "FirstName", "label": "First Name", "type": "text", "validations": { "required": true } },
         { "name": "LastName", "label": "Last Name", "type": "text", "validations": { "required": true } },
         { "name": "email", "label": "Email", "type": "email", "validations": { "required": true, "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$" } },
-        { "name": "phone", "label": "Phone Number", "type": "tel", "validations": { "required": true, "pattern": "^[0-9]{10}$" } },
-        { "name": "gender", "label": "Gender", "type": "dropdown", "options": ["male", "female"], "validations": { "required": true }, "rule": { "show": ""} }
+        { "name": "phone", "label": "Phone Number", "type": "tel", "validations": { "required": true, "pattern": "^[0-9]{10}$" } }
+        
       ]
     },
     {
