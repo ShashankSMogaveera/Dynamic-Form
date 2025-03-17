@@ -16,10 +16,16 @@ interface ProgressBarComponentProps {
 const ProgressBar: React.FC<ProgressBarComponentProps> = ({ itemList }) => {
     const dispatch= useDispatch();
     const current= useSelector((state: RootState)=> state.progress.current)
+    const isError= useSelector((state: RootState)=> state.progress.isError)
+    function handleChange(value: number){
+        dispatch(incrementCurrentByValue({value:value}));        
+    }
     return (
             <main className=' my-4'>
                 <Steps
                 current={current}
+                status={isError ? 'error': undefined}
+                // onChange={handleChange}
                 items={itemList}
                 />
             </main>
