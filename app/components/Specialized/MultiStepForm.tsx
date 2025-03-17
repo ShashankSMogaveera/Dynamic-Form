@@ -74,6 +74,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
   };
 
   const handlePrev = () => {
+    dispatch(setError({value: false}));
     dispatch(prevStep(config));
     dispatch(decrementCurret())
   }
