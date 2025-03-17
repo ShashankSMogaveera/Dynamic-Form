@@ -25,8 +25,9 @@ const ProgressBar: React.FC<ProgressBarComponentProps> = ({ itemList }) => {
                 <Steps
                 current={current}
                 status={isError ? 'error': undefined}
-                // onChange={handleChange}
                 items={itemList}
+                labelPlacement='vertical'                
+                // onChange={handleChange}
                 />
             </main>
     )
