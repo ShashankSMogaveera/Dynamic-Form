@@ -21,9 +21,10 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const stepIndex = config.steps.findIndex((s: any) => {
-    return s.label === stepName
-
-});
+    console.log('config step '+s.name);
+    console.log("step name ",stepName);
+    return s.name === stepName});
+  console.log(stepIndex)
   useEffect(() => {
     if (stepIndex !== -1) {
       dispatch(updateStepName(config.steps[stepIndex].name));

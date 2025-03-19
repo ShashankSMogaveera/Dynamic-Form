@@ -31,9 +31,6 @@ const ProgressBar: React.FC<ProgressBarComponentProps> = ({ itemList }) => {
       alert('fill all required data to navigate')
     }
   }
-  
-  // console.log(current)
-  // console.log(steps[current])
   return (
     <main className="my-4">
       <Steps

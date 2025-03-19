@@ -14,7 +14,7 @@ export default function FormPage() {
   useEffect(() => {
     dispatch(initializeForm(formConfig));
   }, [dispatch]);
-  const itemlist= formConfig.steps.map(item=> ({title: item.label}))
+  const itemlist= formConfig.steps.map(item=> ({title: item.name}))
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center p-10"
