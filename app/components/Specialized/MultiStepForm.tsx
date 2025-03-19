@@ -5,7 +5,7 @@ import { nextStep, prevStep, updateFormData, initializeForm, updateStepName } fr
 import InputField from "../Reusable/InputField";
 import { RootState } from "../../store/store";
 import { validateField } from "../../utils/validation";
-import { decrementCurret, incrementCurrent, incrementCurrentByValue, setError } from "@/app/store/ProgressSlice";
+import { decrementCurret, incrementCurrent, setCurrentByValue, setError, setTotalProgress } from "@/app/store/ProgressSlice";
 
 interface MultiStepFormProps {
   config: any;
@@ -15,9 +15,21 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const dispatch = useDispatch();
   const stepName = useSelector((state: RootState) => state.form.stepName);
   const formSteps = useSelector((state: RootState) => state.form.formSteps);
+  const current = useSelector((state: RootState) => state.progress.current);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [submittedData, setSubmittedData] = useState<{ [key: string]: any } | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const stepIndex = config.steps.findIndex((s: any) => {
+    return s.label === stepName
+
+});
+  useEffect(() => {
+    if (stepIndex !== -1) {
+      dispatch(updateStepName(config.steps[stepIndex].name));
+    }
+  }, [stepIndex, dispatch]);
+
 
   const currentStepConfig = config.steps.find((s: any) => s.name === stepName);
   const formData = formSteps || {};
@@ -55,14 +67,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
     setErrors(newErrors);
     return isValid;
   };
-
-  const stepIndex = config.steps.findIndex((s: any) => s.name === stepName);
-
-  useEffect(() => {
-    if (stepIndex !== -1) {
-      dispatch(updateStepName(config.steps[stepIndex].name));
-    }
-  }, [stepIndex, dispatch]);
+  
 
   const handleNext = () => {
     if (validateStep()) {
@@ -91,8 +96,9 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const handleResetForm = () => {
     setIsSubmitted(false);
     setSubmittedData(null);
-    dispatch(incrementCurrentByValue({ value: 0 }));
+    dispatch(setCurrentByValue({ value: 0 }));
     dispatch(initializeForm(config));
+    dispatch(setTotalProgress({value: 0}));
   };
 
   return (
