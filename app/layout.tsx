@@ -27,8 +27,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider> {/* ✅ Ensure theme applies globally */}
-          <Providers> {/* Wrap any other providers inside ThemeProvider */}
+        <ThemeProvider> 
+          <Providers>
             <main className="min-h-screen">{children}</main>
           </Providers>
         </ThemeProvider>
