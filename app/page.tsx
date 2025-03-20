@@ -14,28 +14,28 @@ export default function Home() {
 
       <div className="flex gap-2 p-2">
       <button
-        onClick={() => router.push("/form")}
+        onClick={() => router.push("/en/form")}
         className="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold transition-all mt-3"
       >
         Open Form
       </button>
 
       <button
-        onClick={() => router.push("/home-details")}
+        onClick={() => router.push("/en/home-details")}
         className="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold transition-all mt-3"
       >
         Home details
       </button>
 
       <button
-        onClick={() => router.push("/job-application")}
+        onClick={() => router.push("/en/job-application")}
         className="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold transition-all mt-3"
       >
         Job Application
       </button>
 
       <button
-        onClick={() => router.push("/location-details")}
+        onClick={() => router.push("/en/location-details")}
         className="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold transition-all mt-3"
       >
         Location Details
