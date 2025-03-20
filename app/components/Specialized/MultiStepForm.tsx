@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { genderFetch } from "../../../public/genderFetch";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nextStep, prevStep, updateFormData,initializeForm } from "../../store/formSlice";
 import InputField from "../Reusable/InputField";
@@ -11,6 +12,8 @@ interface MultiStepFormProps {
   config: any;
 }
 
+
+
 const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const dispatch = useDispatch();
   const stepName = useSelector((state: RootState) => state.form.stepName);
@@ -18,8 +21,22 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [submittedData, setSubmittedData] = useState<{ [key: string]: string } | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false); 
+  const [genders, setGenders] = useState<string[]>([]);
 
   const currentStepConfig = config.steps.find((s: any) => s.name === stepName);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await genderFetch(); 
+        setGenders(data.genders); 
+      } catch (error) {
+        console.error("Failed to fetch genders:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
@@ -99,7 +116,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
               name={field.name}
               value={formData[field.name] || ""}
               onChange={handleChange}
-              options={field.options}
+              options={field.name === "gender" ? genders : field.options}
               error={errors[field.name]}
             />
           ))}
