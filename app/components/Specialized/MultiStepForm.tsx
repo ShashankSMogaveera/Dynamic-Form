@@ -5,7 +5,7 @@ import { nextStep, prevStep, updateFormData, initializeForm, updateStepName } fr
 import InputField from "../Reusable/InputField";
 import { RootState } from "../../store/store";
 import { validateField } from "../../utils/validation";
-import { decrementCurret, incrementCurrent, incrementCurrentByValue, setError } from "@/app/store/ProgressSlice";
+import { decrementCurret, incrementCurrent,  setCurrentByValue,  setError, setTotalProgress } from "@/app/store/ProgressSlice";
 import { useIntl } from "react-intl";
 
 
