@@ -1,13 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface StepData {
+  [key: string]: Record<string, string>; 
+}
+
 interface FormState {
   stepName: string;
-  formData: Record<string, string>;
+  formSteps: StepData; 
 }
 
 const initialState: FormState = {
   stepName: "",
-  formData: {},
+  formSteps: {},
 };
 
 const formSlice = createSlice({
@@ -15,8 +19,12 @@ const formSlice = createSlice({
   initialState,
   reducers: {
     initializeForm: (state, action: PayloadAction<any>) => {
-      state.stepName = action.payload.steps[0].name;
-      state.formData = {};
+      const steps = action.payload.steps;
+      state.stepName = steps[0].name;
+      state.formSteps = steps.reduce((acc: StepData, step: any) => {
+        acc[step.name] = {}; 
+        return acc;
+      }, {});
     },
     nextStep: (state, action: PayloadAction<any>) => {
       const config = action.payload;
@@ -32,11 +40,17 @@ const formSlice = createSlice({
         state.stepName = config.steps[currentIndex - 1].name;
       }
     },
-    updateFormData: (state, action) => {
-      state.formData = { ...state.formData, ...action.payload };
+    updateFormData: (state, action: PayloadAction<{ stepName: string; data: Record<string, string> }>) => {
+      const { stepName, data } = action.payload;
+      if (state.formSteps[stepName]) {
+        state.formSteps[stepName] = { ...state.formSteps[stepName], ...data };
+      }
+    },
+    updateStepName: (state, action: PayloadAction<string>) => {
+      state.stepName = action.payload;
     },
   },
 });
 
-export const { initializeForm, nextStep, prevStep, updateFormData } = formSlice.actions;
+export const { initializeForm, nextStep, prevStep, updateFormData, updateStepName } = formSlice.actions;
 export default formSlice.reducer;

@@ -2,11 +2,11 @@
 import { genderFetch } from "../../../public/genderFetch";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { nextStep, prevStep, updateFormData,initializeForm } from "../../store/formSlice";
+import { nextStep, prevStep, updateFormData, initializeForm, updateStepName } from "../../store/formSlice";
 import InputField from "../Reusable/InputField";
 import { RootState } from "../../store/store";
 import { validateField } from "../../utils/validation";
-import { decrementCurret, incrementCurrent, incrementCurrentByValue } from "@/app/store/ProgressSlice";
+import { decrementCurret, incrementCurrent, setCurrentByValue, setError, setTotalProgress } from "@/app/store/ProgressSlice";
 
 interface MultiStepFormProps {
   config: any;
@@ -17,13 +17,27 @@ interface MultiStepFormProps {
 const MultiStepForm = ({ config }: MultiStepFormProps) => {
   const dispatch = useDispatch();
   const stepName = useSelector((state: RootState) => state.form.stepName);
-  const formData = useSelector((state: RootState) => state.form.formData) as { [key: string]: string };
+  const formSteps = useSelector((state: RootState) => state.form.formSteps);
+  const current = useSelector((state: RootState) => state.progress.current);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [submittedData, setSubmittedData] = useState<{ [key: string]: string } | null>(null);
-  const [isSubmitted, setIsSubmitted] = useState(false); 
+  const [submittedData, setSubmittedData] = useState<{ [key: string]: any } | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const stepIndex = config.steps.findIndex((s: any) => {
+    console.log('config step '+s.name);
+    console.log("step name ",stepName);
+    return s.name === stepName});
+  console.log(stepIndex)
+  useEffect(() => {
+    if (stepIndex !== -1) {
+      dispatch(updateStepName(config.steps[stepIndex].name));
+    }
+  }, [stepIndex, dispatch]);
+
   const [genders, setGenders] = useState<string[]>([]);
 
   const currentStepConfig = config.steps.find((s: any) => s.name === stepName);
+  const formData = formSteps || {};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,11 +54,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
-
-    let finalValue = value;
-    if (type === "checkbox") {
-      finalValue = checked ? "true" : "false";
-    }
+    let finalValue = type === "checkbox" ? (checked ? "true" : "false") : value;
 
     const fieldConfig = currentStepConfig?.fields.find((f: any) => f.name === name);
     const errorMsg = fieldConfig ? validateField(fieldConfig, finalValue) : "";
@@ -54,17 +64,20 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
       [name]: errorMsg,
     }));
 
-    dispatch(updateFormData({ [name]: finalValue }));
+    dispatch(updateFormData({ stepName, data: { [name]: finalValue } }));
   };
 
   const validateStep = (): boolean => {
     let isValid = true;
+    dispatch(setError({value:false}));
     const newErrors: { [key: string]: string } = {};
+    dispatch(setError({ value: false }));
 
     currentStepConfig?.fields.forEach((field: any) => {
-      const errorMsg = validateField(field, formData[field.name] || "");
+      const errorMsg = validateField(field, formData[stepName]?.[field.name] || "");
       if (errorMsg) {
         isValid = false;
+        dispatch(setError({ value: true }));
         newErrors[field.name] = errorMsg;
       }
     });
@@ -72,49 +85,51 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
     setErrors(newErrors);
     return isValid;
   };
+  
 
   const handleNext = () => {
     if (validateStep()) {
       dispatch(nextStep(config));
       dispatch(incrementCurrent());
-      console.log("next")
     }
   };
 
   const handlePrev = () => {
+    dispatch(setError({ value: false }));
     dispatch(prevStep(config));
-    dispatch(decrementCurret())
-  }
+    dispatch(decrementCurret());
+  };
 
   const handleSubmit = () => {
     if (validateStep()) {
+      console.log("Final Form Data Before Submission:", formData);
       localStorage.setItem("submittedFormData", JSON.stringify(formData));
-      setSubmittedData(formData);
+
+      setSubmittedData({ ...formData });
       dispatch(incrementCurrent());
       setIsSubmitted(true);
     }
   };
 
   const handleResetForm = () => {
-    setIsSubmitted(false); 
-    setSubmittedData(null); 
-    dispatch(incrementCurrentByValue(0));
+    setIsSubmitted(false);
+    setSubmittedData(null);
+    dispatch(setCurrentByValue({ value: 0 }));
     dispatch(initializeForm(config));
+    dispatch(setTotalProgress({value: 0}));
   };
 
   return (
     <div>
-      
       {!isSubmitted ? (
         <>
-          <h2>{currentStepConfig?.label}</h2>
           {currentStepConfig?.fields.map((field: any) => (
             <InputField
               key={field.name}
               label={field.label}
               type={field.type}
               name={field.name}
-              value={formData[field.name] || ""}
+              value={formData[stepName]?.[field.name] || ""}
               onChange={handleChange}
               options={field.name === "gender" ? genders : field.options}
               error={errors[field.name]}
@@ -122,12 +137,12 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
           ))}
 
           <div>
-            {config.steps.findIndex((s: any) => s.name === stepName) > 0 && (
+            {stepIndex > 0 && (
               <button onClick={handlePrev} className="px-4 py-2 bg-gray-500 text-white rounded-md">
                 Previous
               </button>
             )}
-            {config.steps.findIndex((s: any) => s.name === stepName) < config.steps.length - 1 ? (
+            {stepIndex < config.steps.length - 1 ? (
               <button onClick={handleNext} className="px-4 py-2 bg-black text-white rounded-md ml-2">
                 Next
               </button>
@@ -141,13 +156,25 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
       ) : (
         <div className="mt-6 p-4 border rounded-md bg-gray-100">
           <h3 className="text-lg font-bold mb-2">Submitted Data:</h3>
-          <ul>
-            {Object.entries(submittedData || {}).map(([key, value]) => (
-              <li key={key} className="mb-1">
-                <strong>{key}:</strong> {value}
-              </li>
-            ))}
-          </ul>
+          {submittedData && Object.keys(submittedData).length > 0 ? (
+            <ul>
+              {Object.entries(submittedData).map(([step, data]) => (
+                <li key={step} className="mb-2">
+                  <strong>{step}:</strong>
+                  <ul>
+                    {data &&
+                      Object.entries(data).map(([key, value]) => (
+                        <li key={key}>
+                          <strong>{key}:</strong> {String(value)}
+                        </li>
+                      ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No data submitted</p>
+          )}
           <button onClick={handleResetForm} className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md">
             Fill Again
           </button>
@@ -158,4 +185,3 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
 };
 
 export default MultiStepForm;
-

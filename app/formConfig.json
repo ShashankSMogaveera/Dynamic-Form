@@ -1,7 +1,7 @@
 {
   "steps": [
     {
-      "name": "personal_info",
+      "name": "Personal_info",
       "label": "Personal Information",
       "fields": [
         { "name": "FirstName", "label": "First Name", "type": "text", "validations": { "required": true } },
@@ -12,7 +12,7 @@
       ]
     },
     {
-      "name": "address_info",
+      "name": "Address_info",
       "label": "Address Information",
       "fields": [
         { "name": "address", "label": "Address", "type": "text", "validations": { "required": true } },
@@ -22,7 +22,7 @@
       ]
     },
     {
-      "name": "preferences",
+      "name": "Preferences",
       "label": "Preferences",
       "fields": [
         {
@@ -41,7 +41,7 @@
       ]
     },
     {
-      "name": "confirmation",
+      "name": "Confirmation",
       "label": "Confirmation",
       "fields": []
     }

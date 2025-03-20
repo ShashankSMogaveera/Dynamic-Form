@@ -5,7 +5,6 @@ import MultiStepForm from "../components/Specialized/MultiStepForm";
 import jobApplicationConfig from "../jobApplicationConfig.json";
 import { initializeForm } from "../store/formSlice";
 import ProgressBar from "../components/Reusable/ProgressBar";
-import { title } from "process";
 
 export default function JobApplicationPage() {
   const dispatch = useDispatch();
