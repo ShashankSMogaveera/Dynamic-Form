@@ -13,8 +13,10 @@
     "@reduxjs/toolkit": "^2.6.0",
     "antd": "^5.24.3",
     "next": "15.2.0",
+    "next-intl": "^4.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-intl": "^7.1.6",
     "react-redux": "^9.2.0"
   },
   "devDependencies": {

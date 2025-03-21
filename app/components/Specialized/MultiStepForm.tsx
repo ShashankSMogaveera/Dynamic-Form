@@ -6,15 +6,17 @@ import { nextStep, prevStep, updateFormData, initializeForm, updateStepName } fr
 import InputField from "../Reusable/InputField";
 import { RootState } from "../../store/store";
 import { validateField } from "../../utils/validation";
-import { decrementCurret, incrementCurrent, setCurrentByValue, setError, setTotalProgress } from "@/app/store/ProgressSlice";
+import { decrementCurret, incrementCurrent,  setCurrentByValue,  setError, setTotalProgress } from "@/app/store/ProgressSlice";
+import { useIntl } from "react-intl";
+
 
 interface MultiStepFormProps {
   config: any;
+  locale:string;
 }
 
-
-
-const MultiStepForm = ({ config }: MultiStepFormProps) => {
+const MultiStepForm = ({ config ,locale}: MultiStepFormProps) => {
+  const intl=useIntl()
   const dispatch = useDispatch();
   const stepName = useSelector((state: RootState) => state.form.stepName);
   const formSteps = useSelector((state: RootState) => state.form.formSteps);
@@ -139,23 +141,23 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
           <div>
             {stepIndex > 0 && (
               <button onClick={handlePrev} className="px-4 py-2 bg-gray-500 text-white rounded-md">
-                Previous
+                {intl.formatMessage({ id: "previous" })}
               </button>
             )}
             {stepIndex < config.steps.length - 1 ? (
               <button onClick={handleNext} className="px-4 py-2 bg-black text-white rounded-md ml-2">
-                Next
+                {intl.formatMessage({ id: "next" })}
               </button>
             ) : (
               <button onClick={handleSubmit} className="px-4 py-2 bg-green-600 text-white rounded-md ml-2">
-                Submit
+                {intl.formatMessage({ id: "submit" })}
               </button>
             )}
           </div>
         </>
       ) : (
         <div className="mt-6 p-4 border rounded-md bg-gray-100">
-          <h3 className="text-lg font-bold mb-2">Submitted Data:</h3>
+          <h3 className="text-lg font-bold mb-2">{intl.formatMessage({ id: "submittedData" })}</h3>
           {submittedData && Object.keys(submittedData).length > 0 ? (
             <ul>
               {Object.entries(submittedData).map(([step, data]) => (
@@ -176,7 +178,7 @@ const MultiStepForm = ({ config }: MultiStepFormProps) => {
             <p>No data submitted</p>
           )}
           <button onClick={handleResetForm} className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md">
-            Fill Again
+          {intl.formatMessage({ id: "fillAgain" })}
           </button>
         </div>
       )}
